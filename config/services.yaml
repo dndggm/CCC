@@ -1,0 +1,72 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+#nelmio_cors:
+#    defaults:
+#        origin_regex: true
+#        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
+#        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+#        allow_headers: ['Content-Type', 'Authorization']
+#        expose_headers: ['Link']
+#        max_age: 3600
+#    paths:
+#        '^/api/':
+#             allow_origin: ['*']
+#             allow_headers: ['X-Custom-Auth']
+#             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+#             max_age: 3600
+#        '^/':
+#            origin_regex: true
+#            allow_origin: ['*']
+#            allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+#            allow_headers: ['Content-Type', 'Authorization']
+#            expose_headers: ['Link']
+#            max_age: 3600
+
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        origin_regex: false
+        allow_origin: []
+        allow_methods: []
+        allow_headers: []
+        expose_headers: []
+        hosts: []
+        max_age: 0
+    paths:
+        '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['*']
+            max_age: 3600
+        '^/':
+            origin_regex: true
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['*']
+            expose_headers: ['*']
